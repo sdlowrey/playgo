@@ -6,11 +6,11 @@ import (
 	"time"
 )
 
-func boring(msg string, length int) chan string {
+func boring(msg string) chan string {
 	c := make(chan string)
 	rand.Seed(rand.Int63())
 	go func() {
-		for i := 0; i < length; i++ {
+		for i := 0; ; i++ {
 			c <- fmt.Sprintf("%s %d", msg, i)
 			time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)
 		}
@@ -20,9 +20,11 @@ func boring(msg string, length int) chan string {
 }
 
 func main() {
-	fmt.Println("I'm listening.")
-	for whatever := range boring("something dull", 5) {
-		fmt.Printf("You said %s\n", whatever)
+	donnie := boring("blah blah")
+	walter := boring("shut the fuck up")
+	for  i := 0; i < 5; i++{
+		fmt.Println(<- donnie)
+		fmt.Println(<- walter)
 	}
 	fmt.Println("You're boring. Bye!")
 }
